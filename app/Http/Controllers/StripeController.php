@@ -34,7 +34,9 @@ class StripeController extends Controller
                     'email' => $user->email,
                     'name' => $user->first_name . ' ' . $user->last_name,
                 ]);
-                $user->update(['stripe_customer_id' => $customer->id]);
+
+                $user->stripe_customer_id = $customer->id;
+                $user->save();
             }
 
             if (
@@ -46,6 +48,11 @@ class StripeController extends Controller
             }
 
             $paymentMethod = PaymentMethod::retrieve($request->payment_method);
+
+            if (!$user->stripe_customer_id) {
+                return response()->json(['error' => 'No se pudo obtener el ID de cliente de Stripe'], 500);
+            }
+
             $paymentMethod->attach(['customer' => $user->stripe_customer_id]);
 
             UserCard::create([
