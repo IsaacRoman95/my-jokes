@@ -24,7 +24,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $hidden = [
-        'password', 
+        'password',
     ];
 
     public function getJWTIdentifier()
@@ -36,4 +36,10 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    public function userCards()
+    {
+        return $this->hasMany(UserCard::class, 'user_id');
+    }
+
 }

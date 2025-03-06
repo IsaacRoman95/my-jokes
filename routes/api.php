@@ -21,6 +21,7 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware(['jwt'])->group(function () {
     Route::get('/home', [HomeController::class, 'home']);
-
     Route::post('/register-card', [StripeController::class, 'registerCard']);
+    Route::get('/list-cards', [StripeController::class, 'listCards']);
+    Route::post('/charge-card', [StripeController::class, 'chargeCard']);
 });
